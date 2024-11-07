@@ -12,21 +12,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      db:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: secret
-          POSTGRES_DB: flask_app
-        ports:
-          - 5432:5432
-
-      redis:
-        image: redis:alpine
-        ports:
-          - 6379:6379
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -37,6 +22,11 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t myapp .
+
+      - name: Stop and Remove Existing Containers
+        run: |
+          docker stop db redis || true
+          docker rm db redis || true
 
       - name: Start Services
         run: |
@@ -51,5 +41,5 @@ jobs:
 
       - name: Stop Services
         run: |
-          docker stop db redis
-          docker rm db redis
+          docker stop db redis || true
+          docker rm db redis || true
