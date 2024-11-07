@@ -34,16 +34,22 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and Start Services
-        run: docker-compose -f docker-compose.yml up --build -d
-
-      - name: Wait for services to be ready
+      - name: Build Docker Image
         run: |
+          docker build -t myapp .
+
+      - name: Start Services
+        run: |
+          docker run -d --name db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=flask_app -p 5432:5432 postgres:13
+          docker run -d --name redis -p 6379:6379 redis:alpine
           echo "Waiting for services to be ready..."
           sleep 20  # Adjust the sleep time as necessary
 
       - name: Run Tests
-        run: docker-compose -f docker-compose.yml run app pytest
+        run: |
+          docker run --network host myapp pytest
 
       - name: Stop Services
-        run: docker-compose -f docker-compose.yml down
+        run: |
+          docker stop db redis
+          docker rm db redis
