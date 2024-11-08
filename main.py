@@ -8,5 +8,5 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run(host=Config.FLASK_APP_HOST,
-            port=Config.FLASK_APP_PORT,
+            # port=Config.FLASK_APP_PORT,
             debug=Config.FLASK_DEBUG)
