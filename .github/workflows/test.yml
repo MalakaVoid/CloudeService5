@@ -1,12 +1,12 @@
-name: Test with Docker Compose
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main  # Change this to your default branch if necessary
+      - main
   pull_request:
     branches:
-      - main  # Change this to your default branch if necessary
+      - main
 
 jobs:
   test:
@@ -33,7 +33,7 @@ jobs:
           docker run -d --name db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=flask_app -p 5432:5432 postgres:13
           docker run -d --name redis -p 6379:6379 redis:alpine
           echo "Waiting for services to be ready..."
-          sleep 20  # Adjust the sleep time as necessary
+          sleep 20  # Настройте время ожидания при необходимости
 
       - name: Run Tests
         run: |
@@ -43,3 +43,18 @@ jobs:
         run: |
           docker stop db redis || true
           docker rm db redis || true
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: Deploy to Server
+        run: |
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /projects/CloudeService5 && git pull && docker-compose up -d --build"
