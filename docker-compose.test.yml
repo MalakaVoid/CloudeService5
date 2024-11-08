@@ -15,7 +15,7 @@ services:
       redis:
         condition: service_healthy
     environment:
-      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@localhost:5432/flask_app
       - REDIS_HOST=redis
 
   db:
