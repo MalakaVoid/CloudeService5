@@ -58,4 +58,4 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /projects/CloudeService5 && git pull && docker-compose up -d --build && docker-compose down"
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /projects/CloudeService5 && git pull && docker-compose up -d --build"
