@@ -96,6 +96,7 @@ services:
   logstash:
     image: logstash:7.10.1
     volumes:
+#      - /projects/logs/:/projects/logs/
       - /var/lib/docker/containers/:/var/lib/docker/containers/
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     ports:
