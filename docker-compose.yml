@@ -12,6 +12,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      logstash:
+        condition: service_healthy
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
       - REDIS_HOST=redis
@@ -108,6 +110,11 @@ services:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     depends_on:
       - elasticsearch
+    healthcheck:
+      test: [ "CMD-SHELL", "nc -zv localhost 5000" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kibana:
     image: kibana:7.10.1
