@@ -18,9 +18,10 @@ services:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
       - REDIS_HOST=redis
     logging:
-      driver: gelf
+      driver: "json-file"
       options:
-        gelf-address: "udp://logstash:5000"
+        max-size: "10m"
+        max-file: "3"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
       interval: 30s
@@ -88,31 +89,23 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=secret
 
   elasticsearch:
-    image: elasticsearch:7.10.1
+    image: elasticsearch:7.9.3
     environment:
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
       - "9200:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   logstash:
-    image: logstash:7.10.1
-    ports:
-      - "5000:5000"
+    image: logstash:7.9.3
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-    depends_on:
-      - elasticsearch
+    ports:
+      - "5000:5000"
 
   kibana:
-    image: kibana:7.10.1
+    image: kibana:7.9.3
     ports:
       - "5601:5601"
     depends_on:
