@@ -5,6 +5,11 @@ from app.utils import internal_error_response, is_user_exist, make_user_id_cache
 from app.constants import USER_ALREADY_EXISTS, USER_NOT_FOUNDED
 
 
+@app.route('/health')
+def health_check():
+    return {"status": "OK"}, 200
+
+
 @app.get('/')
 def main_page():
     """Main page route"""
