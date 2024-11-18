@@ -10,7 +10,8 @@ class Config:
     FLASK_APP = "app.py"
     FLASK_APP_HOST = os.getenv("FLASK_APP_HOST")
     FLASK_APP_PORT = os.getenv("FLASK_APP_PORT")
-    FLASK_DEBUG = os.getenv("FLASK_DEBUG")
+    # FLASK_DEBUG = os.getenv("FLASK_DEBUG")
+    FLASK_DEBUG = False
 
     SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
     SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS")
