@@ -13,7 +13,7 @@ cache = Cache(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-metrics = PrometheusMetrics(app)
+metrics = PrometheusMetrics(app=app)
 metrics.info('app_info', 'Application info', version='1.0.0')
 
 from app import routes, models, constants
