@@ -110,7 +110,7 @@ services:
       - elasticsearch
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat:7.10.1
+    image: filebeat:7.10.1
     container_name: filebeat
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
@@ -118,7 +118,7 @@ services:
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
     depends_on:
       - elasticsearch
-    user: root  # Filebeat needs root access to read container logs
+    user: root
 
 volumes:
   esdata:
