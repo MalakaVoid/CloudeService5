@@ -8,7 +8,9 @@ from app.constants import USER_ALREADY_EXISTS, USER_NOT_FOUNDED
 @app.get('/')
 def main_page():
     """Main page route"""
-    return "Hello World!"
+    return """
+    <h1>Вы че тут забыли а?? Я НЕНАВИЖУ ДЕВОПС!</h1>
+    """
 
 
 @app.get('/users')
