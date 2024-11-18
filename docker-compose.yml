@@ -16,9 +16,10 @@ services:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
       - REDIS_HOST=redis
     logging:
-      driver: "gelf"
-      options:
-        gelf-address: "udp://logstash:5044"
+        driver: "json-file"
+        options:
+          max-size: "10m"
+          max-file: "3"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
       interval: 30s
@@ -97,6 +98,7 @@ services:
   logstash:
     image: logstash:7.10.1
     volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     ports:
       - "5044:5044"
