@@ -109,7 +109,7 @@ services:
       - elasticsearch
 
   fluentd:
-    image: fluent/fluentd:v1.14.2
+    image: fluent/fluentd
     ports:
       - "24224:24224"
     volumes:
