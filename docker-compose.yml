@@ -16,10 +16,9 @@ services:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
       - REDIS_HOST=redis
     logging:
-        driver: "json-file"
-        options:
-          max-size: "10m"
-          max-file: "3"
+      driver: fluentd
+      options:
+        fluentd-address: "fluentd:24224"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
       interval: 30s
@@ -109,16 +108,13 @@ services:
     depends_on:
       - elasticsearch
 
-  filebeat:
-    image: filebeat:7.10.1
-    container_name: filebeat
+  fluentd:
+    image: fluent/fluentd:v1.14.2
+    ports:
+      - "24224:24224"
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
-    depends_on:
-      - elasticsearch
-    user: root
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+
 
 volumes:
   esdata:
