@@ -24,7 +24,7 @@ def test_home_page(client):
     """Test for home route"""
     response = client.get('/')
     assert response.status_code == 200
-    assert response.get_data(as_text=True) == "Hello World!"
+    assert response.get_data(as_text=True) == "<h1>Вы че тут забыли а?? Я НЕНАВИЖУ ДЕВОПС!</h1>"
 
 
 def test_get_users_response(client, new_user_id):
