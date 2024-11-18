@@ -87,7 +87,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=secret
 
   elasticsearch:
-    image: elasticsearch:7.9.3
+    image: elasticsearch:7.10.1
     environment:
       - discovery.type=single-node
     ports:
@@ -96,14 +96,14 @@ services:
       - esdata:/usr/share/elasticsearch/data
 
   logstash:
-    image: logstash:7.9.3
+    image: logstash:7.10.1
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     ports:
       - "5044:5044"
 
   kibana:
-    image: kibana:7.9.3
+    image: kibana:7.10.1
     ports:
       - "5601:5601"
     depends_on:
