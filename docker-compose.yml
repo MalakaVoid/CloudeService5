@@ -3,8 +3,8 @@ version: '3.7'
 services:
   web:
     build: .
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
 #    deploy:
 #      replicas: 3
     depends_on:
@@ -98,10 +98,9 @@ services:
   logstash:
     image: logstash:7.10.1
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     ports:
-      - "5044:5044"
+      - "5000:5000"
 
   kibana:
     image: kibana:7.10.1
