@@ -8,6 +8,7 @@ services:
     logging:
       driver: json-file
       options:
+        path: "/projects/logs/logs.log"
         max-size: "10m"
         max-file: "3"
     depends_on:
@@ -96,11 +97,10 @@ services:
   logstash:
     image: logstash:7.10.1
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /projects/logs/logs.log:/projects/logs/logs.log
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     ports:
       - "5044:5044"
-
 
   kibana:
     image: kibana:7.10.1
