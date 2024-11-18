@@ -5,8 +5,8 @@ services:
     build: .
     ports:
       - "5000:5000"
-    deploy:
-      replicas: 3
+#    deploy:
+#      replicas: 3
     depends_on:
       db:
         condition: service_healthy
