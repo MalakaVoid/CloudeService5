@@ -2,7 +2,7 @@ version: '3.7'
 services:
   web:
     build: .
-    expose:
+    ports:
       - "5000"
     deploy:
       replicas: 3
