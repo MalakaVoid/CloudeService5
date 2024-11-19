@@ -8,7 +8,7 @@ services:
     logging:
       driver: "syslog"
       options:
-        syslog-address: "tcp://logstash:5044"
+        syslog-address: "tcp://172.21.0.3:5044"
     depends_on:
       db:
         condition: service_healthy
@@ -99,6 +99,7 @@ services:
       - my-network
 
   logstash:
+    hostname: logstash
     image: logstash:7.10.1
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
@@ -108,10 +109,6 @@ services:
       - my-network
     depends_on:
       - elasticsearch
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://elasticsearch:9200" ]
-      interval: 10s
-      retries: 5
 
   kibana:
     image: kibana:7.10.1
