@@ -6,15 +6,16 @@ services:
     expose:
       - "5000"
     logging:
-      driver: json-file
+      driver: "syslog"
       options:
-        max-size: "10m"
-        max-file: "3"
+        syslog-address: "tcp://logstash:5044"
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
+      logstash:
+        condition: service_started
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
       - REDIS_HOST=redis
@@ -96,11 +97,11 @@ services:
   logstash:
     image: logstash:7.10.1
     volumes:
-      - /projects/logs/:/projects/logs/
-#      - /var/lib/docker/containers/:/var/lib/docker/containers/
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     ports:
       - "5044:5044"
+    networks:
+      - my-network
 
   kibana:
     image: kibana:7.10.1
