@@ -1,29 +1,29 @@
 version: '3.7'
 
 services:
-  web:
-    build: .
-    expose:
-      - "5000"
-    logging:
-      driver: "syslog"
-      options:
-        syslog-address: "tcp://localhost:5044"
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      logstash:
-        condition: service_started
-    environment:
-      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
-      - REDIS_HOST=redis
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+#  web:
+#    build: .
+#    expose:
+#      - "5000"
+#    logging:
+#      driver: "syslog"
+#      options:
+#        syslog-address: "tcp://localhost:5044"
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#      redis:
+#        condition: service_healthy
+#      logstash:
+#        condition: service_started
+#    environment:
+#      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
+#      - REDIS_HOST=redis
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
 
   db:
     image: postgres:13
@@ -67,49 +67,49 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/www/certbot:/var/www/certbot
 
-  prometheus:
-    image: prom/prometheus
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    depends_on:
-      - web
-
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
-    depends_on:
-      - prometheus
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=secret
-
-  elasticsearch:
-    image: elasticsearch:7.10.1
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
-
-  logstash:
-    hostname: logstash
-    image: logstash:7.10.1
-    volumes:
-      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-    ports:
-      - "5044:5044"
-    depends_on:
-      - elasticsearch
-
-  kibana:
-    image: kibana:7.10.1
-    ports:
-      - "5601:5601"
-    depends_on:
-      - elasticsearch
+#  prometheus:
+#    image: prom/prometheus
+#    volumes:
+#      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#    ports:
+#      - "9090:9090"
+#    depends_on:
+#      - web
+#
+#  grafana:
+#    image: grafana/grafana
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - prometheus
+#    environment:
+#      - GF_SECURITY_ADMIN_PASSWORD=secret
+#
+#  elasticsearch:
+#    image: elasticsearch:7.10.1
+#    environment:
+#      - discovery.type=single-node
+#    ports:
+#      - "9200:9200"
+#    volumes:
+#      - esdata:/usr/share/elasticsearch/data
+#
+#  logstash:
+#    hostname: logstash
+#    image: logstash:7.10.1
+#    volumes:
+#      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+#    ports:
+#      - "5044:5044"
+#    depends_on:
+#      - elasticsearch
+#
+#  kibana:
+#    image: kibana:7.10.1
+#    ports:
+#      - "5601:5601"
+#    depends_on:
+#      - elasticsearch
 
 volumes:
   esdata:
