@@ -9,13 +9,16 @@ services:
 #      driver: "syslog"
 #      options:
 #        syslog-address: "tcp://localhost:5044"
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#      redis:
+#        condition: service_healthy
 #      logstash:
 #        condition: service_started
+    depends_on:
+      - db
+      - redis
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
       - REDIS_HOST=redis
