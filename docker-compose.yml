@@ -1,29 +1,31 @@
 version: '3.7'
 
 services:
-#  web:
-#    build: .
-#    expose:
-#      - "5000"
+  web:
+    build: .
+    expose:
+      - "5000"
 #    logging:
 #      driver: "syslog"
 #      options:
 #        syslog-address: "tcp://localhost:5044"
-#    depends_on:
-#      db:
-#        condition: service_healthy
-#      redis:
-#        condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 #      logstash:
 #        condition: service_started
-#    environment:
-#      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
-#      - REDIS_HOST=redis
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 3
+    environment:
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:secret@db:5432/flask_app
+      - REDIS_HOST=redis
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - app_network
 
   db:
     image: postgres:13
